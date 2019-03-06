@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .content {
+        margin: 1em;
+        background-color: rgba(207, 9, 9, 0.822);
+      }
+      .name {
+        padding-bottom: 1em;
+      }
+    </style>
+    <div class="container"></div>
+
+    <template id="temp">
+      <div class="content">
+        <div class="name"></div>
+        <div class="nationality"></div>
+        <button class="deleteButton">Delete Me</button>
+      </div>
+    </template>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", get);
+
+      const data = {
+        Name: "Jack",
+        Nationality: "Denmark"
+      };
+
+      const postData = JSON.stringify(data);
+
+      function post(NewPerson) {
+        fetch("https://music-6420.restdb.io/rest/people", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "x-apikey": "5c7ce843cac6621685acbaaa",
+            "cache-control": "no-cache"
+          },
+          body: JSON.stringify(NewPerson)
+        })
+          .then(res => res.json())
+          .then(data => showPerson(data));
+      }
+
+      function deletePost(DeleteID) {
+        fetch("https://music-6420.restdb.io/rest/people/" + DeleteID, {
+          method: "delete",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "x-apikey": "5c7ce843cac6621685acbaaa",
+            "cache-control": "no-cache"
+          }
+        })
+          .then(res => res.json())
+          .then(data => console.log(data));
+      }
+
+      function get() {
+        fetch("https://music-6420.restdb.io/rest/people", {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "x-apikey": "5c7ce843cac6621685acbaaa",
+            "cache-control": "no-cache"
+          }
+        })
+          .then(res => res.json())
+          .then(json => {
+            console.table(json);
+            json.forEach(showPerson);
+          });
+      }
+
+      function showPerson(item) {
+        let clone = document.querySelector("#temp").cloneNode(true).content;
+        clone.querySelector(".name").innerHTML = item.Name;
+        clone.querySelector(".nationality").innerHTML = item.Nationality;
+        clone.querySelector(".content").dataset.id = item._id;
+        clone.querySelector(".deleteButton").addEventListener("click", e => {
+          e.target.parentElement.remove();
+          deletePost(item._id);
+        });
+
+        document.querySelector(".container").appendChild(clone);
+      }
+    </script>
+  </body>
+</html>
