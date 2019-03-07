@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form name="artist">
+      <label> <input type="text" name="userEmail" /> </label>
+      <label> <input type="text" name="nationality" /> </label>
+      <input type="submit" value="Submit" name="submit" />
+    </form>
+
+    <script>
+      const form = document.querySelector("form");
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        console.log("test");
+      });
+    </script>
+  </body>
+</html>
